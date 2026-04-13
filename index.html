@@ -5,41 +5,712 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wenxiang Li</title>
   <style>
+    :root {
+      --bg: #06070a;
+      --panel: rgba(255,255,255,0.05);
+      --panel-2: rgba(255,255,255,0.08);
+      --line: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.96);
+      --muted: rgba(255,255,255,0.68);
+      --soft: rgba(255,255,255,0.45);
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b0f19;
-      color: white;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.14), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.16), transparent 24%),
+        radial-gradient(circle at 20% 70%, rgba(168,85,247,0.12), transparent 26%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(0,0,0,0.32);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .spark {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 0 22px rgba(255,255,255,0.75);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      color: rgba(255,255,255,0.62);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: white; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      text-align: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      transition: 0.25s ease;
+      font-size: 14px;
     }
-    .box {
-      max-width: 900px;
-      padding: 40px;
+
+    .btn-primary {
+      background: white;
+      color: black;
+      border-color: transparent;
     }
+
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04);
+      color: white;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 72px 0 48px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.46);
+      margin-bottom: 28px;
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    .hero-bg-name {
+      font-size: clamp(4rem, 12vw, 11rem);
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: rgba(255,255,255,0.12);
+      margin: 0 0 8px;
+    }
+
     h1 {
-      font-size: 56px;
-      margin-bottom: 16px;
+      margin: 0;
+      font-size: clamp(2.5rem, 7vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
     }
-    p {
-      font-size: 20px;
+
+    .hero-en {
+      margin-top: 8px;
+      font-size: clamp(1.5rem, 4vw, 3.8rem);
+      color: rgba(255,255,255,0.86);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .hero-text {
+      font-size: clamp(1.1rem, 2vw, 1.7rem);
       line-height: 1.8;
-      color: #cbd5e1;
+      max-width: 820px;
+      color: rgba(255,255,255,0.72);
+      margin: 0;
     }
-    a {
-      color: #93c5fd;
-      text-decoration: none;
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 30px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 70px rgba(0,0,0,0.28);
+    }
+
+    .card-inner { padding: 28px; }
+
+    .metric-title {
+      font-size: 13px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.46);
+    }
+
+    .metric-main {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .metric-box {
+      margin-top: 24px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.32);
+      padding: 20px;
+    }
+
+    .metric-number {
+      margin-top: 8px;
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .metric-note {
+      margin-top: 10px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .mini .label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .mini .value {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .stat .value {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .stat .label {
+      margin-top: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .scroll-tip {
+      display: inline-flex;
+      margin-top: 22px;
+      color: rgba(255,255,255,0.56);
+      font-size: 14px;
+    }
+
+    section.block {
+      padding: 72px 0;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .section-id {
+      font-size: 13px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.46);
+    }
+
+    .section-title {
+      margin: 12px 0 0;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      margin-top: 14px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .para {
+      font-size: 18px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      margin: 0 0 18px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .highlight {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: 28px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .highlight h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .highlight p {
+      margin: 12px 0 0;
+      color: rgba(255,255,255,0.64);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .list-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border-radius: 32px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+    }
+
+    .list-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.72);
+      font-size: 18px;
+    }
+
+    .list {
+      margin-top: 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.24);
+      border-radius: 22px;
+      padding: 18px 20px;
+      transition: 0.25s ease;
+    }
+
+    .list-item:hover {
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-1px);
+    }
+
+    .list-no {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 6px;
+    }
+
+    .list-text {
+      font-size: 18px;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .arrow { color: rgba(255,255,255,0.36); }
+
+    .contact-box {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: 36px;
+      padding: 32px;
+      backdrop-filter: blur(18px);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 36px;
+      align-items: end;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.24);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-top: 12px;
+    }
+
+    .contact-item span:last-child { color: rgba(255,255,255,0.45); }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-grid,
+      .contact-grid,
+      .highlight-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 14px; }
+      .stats,
+      .two-col { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .card-inner, .list-card, .contact-box { padding: 22px; }
+      .hero-bg-name { font-size: 4rem; }
+      .metric-number { font-size: 42px; }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Wenxiang Li</h1>
-    <p>强化学习 / 具身智能 / 3D 感知轻量化 / 模型部署优化</p>
-    <p>GitHub: <a href="https://github.com/Li-Whasaka" target="_blank">Wenxiang.Li</a></p>
-  </div>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top"><span class="spark"></span>WENXIANG</a>
+      <nav class="nav-links">
+        <a href="#about">关于我</a>
+        <a href="#research">方向</a>
+        <a href="#engineering">能力</a>
+        <a href="#future">探索</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <a class="btn btn-primary" href="https://github.com/Li-Whasaka" target="_blank" rel="noreferrer">GitHub ↗</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div style="width:100%;">
+        <div class="eyebrow">
+          <span>Personal Research Homepage</span>
+          <span class="dot"></span>
+          <span>MiMo-inspired Interface</span>
+        </div>
+
+        <div class="hero-bg-name">文祥 李</div>
+        <h1>你好，我是 文祥 李</h1>
+        <div class="hero-en">HELLO, I'M WENXIANG LI</div>
+
+        <div class="hero-grid">
+          <div>
+            <p class="hero-text">我专注于强化学习、具身智能、人形机器人、BEV 感知，以及模型轻量化与端侧部署优化。当前工作聚焦 3D 目标检测模型压缩、知识蒸馏、剪枝与高效推理，也持续延展到生成式 AI 与大模型推理优化。</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#about">了解更多</a>
+              <a class="btn btn-ghost" href="https://github.com/Li-Whasaka" target="_blank" rel="noreferrer">查看 GitHub</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <div class="metric-title">Live Metrics</div>
+              <div class="metric-main">实时浏览量</div>
+              <div class="metric-box">
+                <div style="font-size:13px;color:rgba(255,255,255,.45);">Homepage Views</div>
+                <div class="metric-number" id="viewCount">...</div>
+                <div class="metric-note" id="viewNote">每 15 秒自动刷新一次</div>
+              </div>
+              <div class="two-col">
+                <div class="mini">
+                  <div class="label">研究主题</div>
+                  <div class="value">Efficient AI</div>
+                </div>
+                <div class="mini">
+                  <div class="label">工作方式</div>
+                  <div class="value">Research × Deployment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="value">3D</div><div class="label">目标检测 / BEV 感知</div></div>
+          <div class="stat"><div class="value">KD</div><div class="label">蒸馏 / 剪枝 / 压缩</div></div>
+          <div class="stat"><div class="value">RL</div><div class="label">强化学习 / 具身智能</div></div>
+          <div class="stat"><div class="value">Edge</div><div class="label">板端部署 / 推理优化</div></div>
+        </div>
+
+        <a class="scroll-tip" href="#about">向下探索 ↓</a>
+      </div>
+    </section>
+
+    <section class="block" id="about">
+      <div class="container section-grid">
+        <div>
+          <div class="section-id">00 · About</div>
+          <div class="section-title">关于我</div>
+          <div class="section-desc">用研究视角理解模型，用工程方法推动模型落地。</div>
+        </div>
+        <div>
+          <p class="para">我的研究长期围绕“高性能智能模型如何真正落地”展开：既关注算法精度，也关注模型尺寸、时延、吞吐与部署成本。</p>
+          <p class="para">在 3D 感知方向，我重点探索 BEV 表征、通道剪枝、Patch-based Relation Distillation、知识迁移与检测头响应蒸馏。</p>
+          <p class="para">在更广的智能系统方向，我也持续关注强化学习、具身智能、人形机器人，以及大模型的推理优化和系统部署。</p>
+          <div class="tags">
+            <span class="tag">Knowledge Distillation</span>
+            <span class="tag">Channel Pruning</span>
+            <span class="tag">BEV Perception</span>
+            <span class="tag">3D Object Detection</span>
+            <span class="tag">Model Compression</span>
+            <span class="tag">TensorRT / Inference Optimization</span>
+            <span class="tag">Embodied AI</span>
+            <span class="tag">Reinforcement Learning</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="container highlight-grid">
+        <div class="highlight">
+          <h3>高效 3D 检测</h3>
+          <p>聚焦 SECOND / CenterPoint / PV-RCNN 等体系的压缩与蒸馏，兼顾精度、速度与部署成本。</p>
+        </div>
+        <div class="highlight">
+          <h3>研究 + 工程并重</h3>
+          <p>从论文思路、实验验证，到 TensorRT 与端侧部署，形成完整闭环。</p>
+        </div>
+        <div class="highlight">
+          <h3>面向真实系统</h3>
+          <p>关注人形机器人、具身智能与生成式 AI 在真实设备上的推理效率和交互体验。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="research">
+      <div class="container section-grid">
+        <div>
+          <div class="section-id">01 · Research</div>
+          <div class="section-title">研究方向</div>
+          <div class="section-desc">围绕高效智能系统展开，从 3D 检测、BEV 表征到具身智能与大模型部署，强调算法与系统协同设计。</div>
+        </div>
+        <div class="list-card">
+          <div class="list-title">研究方向 <span class="icon-badge">◌</span></div>
+          <div class="list">
+            <div class="list-item"><div><div class="list-no">01</div><div class="list-text">3D 目标检测模型轻量化与压缩</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">02</div><div class="list-text">Patch / Relation Distillation 与响应蒸馏</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">03</div><div class="list-text">BEV 感知与多模态检测</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">04</div><div class="list-text">强化学习与具身智能系统</div></div><div class="arrow">↗</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="engineering">
+      <div class="container section-grid">
+        <div>
+          <div class="section-id">02 · Engineering</div>
+          <div class="section-title">工程能力</div>
+          <div class="section-desc">兼顾训练端与部署端，关注可复现、可优化、可上线的完整链路。</div>
+        </div>
+        <div class="list-card">
+          <div class="list-title">工程能力 <span class="icon-badge">◫</span></div>
+          <div class="list">
+            <div class="list-item"><div><div class="list-no">01</div><div class="list-text">PyTorch / MMDetection3D 研发</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">02</div><div class="list-text">模型剪枝、蒸馏、量化与结构优化</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">03</div><div class="list-text">TensorRT / ONNX / 板端推理加速</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">04</div><div class="list-text">实验设计、消融分析、论文与专利写作</div></div><div class="arrow">↗</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="future">
+      <div class="container section-grid">
+        <div>
+          <div class="section-id">03 · Exploration</div>
+          <div class="section-title">持续探索</div>
+          <div class="section-desc">从自动驾驶感知延展到更通用的高效智能体，关注未来可落地的 Agent / Robot 系统。</div>
+        </div>
+        <div class="list-card">
+          <div class="list-title">持续探索 <span class="icon-badge">◎</span></div>
+          <div class="list">
+            <div class="list-item"><div><div class="list-no">01</div><div class="list-text">人形机器人感知与决策链路</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">02</div><div class="list-text">RLHF / PPO 等强化学习基础范式</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">03</div><div class="list-text">大模型流式输出与服务部署</div></div><div class="arrow">↗</div></div>
+            <div class="list-item"><div><div class="list-no">04</div><div class="list-text">多模态模型高效推理与端云协同</div></div><div class="arrow">↗</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="contact">
+      <div class="container contact-box">
+        <div class="contact-grid">
+          <div>
+            <div class="section-id">04 · Contact</div>
+            <div class="section-title">与我交流研究、工程与未来系统</div>
+            <div class="section-desc">欢迎围绕 3D 感知轻量化、知识蒸馏、强化学习、具身智能、人形机器人，或大模型推理与部署优化相关话题进行交流合作。</div>
+          </div>
+          <div>
+            <div class="contact-item"><span>邮箱</span><span>your-email@example.com</span></div>
+            <a class="contact-item" href="https://github.com/Li-Whasaka" target="_blank" rel="noreferrer"><span>GitHub Profile</span><span>↗</span></a>
+            <div class="contact-item"><span>Location</span><span>Taiwan / China</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const COUNTER_API_URL = 'https://api.countapi.xyz/hit/wenxiang-li-homepage/visits';
+    const viewCount = document.getElementById('viewCount');
+    const viewNote = document.getElementById('viewNote');
+
+    function formatNumber(value) {
+      try {
+        return new Intl.NumberFormat('zh-CN').format(value || 0);
+      } catch {
+        return String(value || 0);
+      }
+    }
+
+    async function updateViews() {
+      try {
+        const res = await fetch(COUNTER_API_URL);
+        if (!res.ok) throw new Error('Counter request failed');
+        const data = await res.json();
+        const value = typeof data.value === 'number' ? data.value : 0;
+        viewCount.textContent = formatNumber(value);
+        viewNote.textContent = '每 15 秒自动刷新一次';
+      } catch (e) {
+        viewCount.textContent = '--';
+        viewNote.textContent = '计数接口未连接，后续可替换 COUNTER_API_URL';
+      }
+    }
+
+    updateViews();
+    setInterval(updateViews, 15000);
+  </script>
 </body>
 </html>
